@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["SSS", "PBP", "PPP"],
+  "key": {
+    "S": {"item": "minecraft:stick"},
+    "P": {"tag": "minecraft:planks"},
+    "B": {"item": "minecraft:book"}
+  },
+  "result": {"item": "dailytrials:quest_board", "count": 1}
+}
