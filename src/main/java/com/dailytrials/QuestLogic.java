@@ -7,13 +7,12 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.world.Difficulty;
 
 /** Lógica de entrega de misiones, compartida por el Tablón y por Ramiro el Escribano. */
 public final class QuestLogic {
 
     public static int multiplier(MinecraftServer server) {
-        return server.getOverworld().getDifficulty() == Difficulty.HARD ? 2 : 1; // en Difícil, doble recompensa
+        return Mutacion.ACTIVAS.isEmpty() ? 1 : 2; // con mutaciones activas, recompensa doble
     }
 
     private static void hablar(ServerPlayerEntity sp, String texto, Formatting color) {

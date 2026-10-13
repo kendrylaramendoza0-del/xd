@@ -1,7 +1,5 @@
 package com.dailytrials;
 
-import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
-import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -12,7 +10,6 @@ import net.minecraft.block.MapColor;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
-import net.minecraft.entity.SpawnRestriction;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -22,7 +19,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.Heightmap;
 
 public final class ModContent {
     public static final String ID = "dailytrials";
@@ -38,14 +34,17 @@ public final class ModContent {
     public static final Item AMULETO = Registry.register(Registries.ITEM, id("amuleto"),
             new AmuletoItem(new FabricItemSettings().maxCount(8)));
 
+    public static final Item ALMA = Registry.register(Registries.ITEM, id("alma_oscura"),
+            new AlmaOscuraItem(new FabricItemSettings()));
+
     public static final EntityType<SombraEntity> SOMBRA = Registry.register(Registries.ENTITY_TYPE, id("sombra"),
             FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, SombraEntity::new)
-                    .dimensions(EntityDimensions.fixed(0.6f, 1.95f))
+                    .dimensions(EntityDimensions.fixed(0.9f, 1.5f))
                     .fireImmune()
                     .build());
 
     public static final Item SOMBRA_EGG = Registry.register(Registries.ITEM, id("sombra_spawn_egg"),
-            new SpawnEggItem(SOMBRA, 0x1b1b2f, 0x7f3fbf, new FabricItemSettings()));
+            new SpawnEggItem(SOMBRA, 0x0b0612, 0x9b4dff, new FabricItemSettings()));
 
     public static final EntityType<EscribanoEntity> ESCRIBANO = Registry.register(Registries.ENTITY_TYPE, id("escribano"),
             FabricEntityTypeBuilder.create(SpawnGroup.MISC, EscribanoEntity::new)
@@ -59,15 +58,11 @@ public final class ModContent {
         FabricDefaultAttributeRegistry.register(SOMBRA, SombraEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(ESCRIBANO, VillagerEntity.createVillagerAttributes());
 
-        // Las Sombras solo aparecen solas en los "días de Sombras" (ver SombraEntity.activas)
-        SpawnRestriction.register(SOMBRA, SpawnRestriction.Location.ON_GROUND,
-                Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, SombraEntity::puedeAparecer);
-        BiomeModifications.addSpawn(BiomeSelectors.foundInOverworld(), SpawnGroup.MONSTER, SOMBRA, 40, 1, 3);
-
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(e -> {
             e.add(QUEST_BOARD_ITEM);
             e.add(AMULETO);
         });
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(e -> e.add(ALMA));
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.SPAWN_EGGS).register(e -> {
             e.add(SOMBRA_EGG);
             e.add(ESCRIBANO_EGG);

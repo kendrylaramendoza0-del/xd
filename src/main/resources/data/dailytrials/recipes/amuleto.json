@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [" A ", "ADA", " A "],
+  "key": {
+    "A": {"item": "dailytrials:alma_oscura"},
+    "D": {"item": "minecraft:diamond"}
+  },
+  "result": {"item": "dailytrials:amuleto", "count": 1}
+}
